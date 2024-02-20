@@ -12,6 +12,8 @@
 
 class BigNum {
 private:
+    explicit BigNum(bool _is_negative, size_t _decimal_precision, std::deque<int64_t>  _value);
+
     static const int64_t base = 1000000000LL;
     static const int64_t decimal_base = 10LL;
     static const int64_t base_exp_ratio = 9LL;
@@ -21,6 +23,9 @@ private:
     std::deque<int64_t> value;
 public:
     explicit BigNum(const char *s);
+
+    BigNum operator+() const;
+    BigNum operator-() const;
 
     // base arithmetic
     friend BigNum operator+(const BigNum &a, const BigNum &b);

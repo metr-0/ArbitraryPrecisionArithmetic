@@ -3,4 +3,6 @@ project(ArbitraryPrecisionArithmetic)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(ArbitraryPrecisionArithmetic main.cpp)
+add_library(ArbitraryPrecisionArithmetic BigNum.cpp BigNum.h)
+
+add_executable(Test main.cpp)

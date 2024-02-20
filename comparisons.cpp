@@ -19,11 +19,11 @@ std::strong_ordering operator<=>(const BigNum &a, const BigNum &b) {
 
         if (av == bv) continue;
 
-        if (!a.is_negative && b.is_negative) return std::strong_ordering::less;
-        if (a.is_negative && !b.is_negative) return std::strong_ordering::greater;
+        if (!a.is_negative && b.is_negative) return std::strong_ordering::greater;
+        if (a.is_negative && !b.is_negative) return std::strong_ordering::less;
 
-        if (a.is_negative) return (av > bv) ? std::strong_ordering::greater : std::strong_ordering::less;
-        return (av > bv) ? std::strong_ordering::less : std::strong_ordering::greater;
+        if (a.is_negative) return (av > bv) ? std::strong_ordering::less : std::strong_ordering::greater;
+        return (av > bv) ? std::strong_ordering::greater : std::strong_ordering::less;
     }
 
     return std::strong_ordering::equal;
@@ -31,7 +31,7 @@ std::strong_ordering operator<=>(const BigNum &a, const BigNum &b) {
 
 bool operator==(const BigNum &a, const BigNum &b) { return (a <=> b) == std::strong_ordering::equal; }
 bool operator!=(const BigNum &a, const BigNum &b) { return (a <=> b) != std::strong_ordering::equal; }
-bool operator<(const BigNum &a, const BigNum &b) { return (a <=> b) == std::strong_ordering::greater; }
-bool operator>(const BigNum &a, const BigNum &b) { return (a <=> b) == std::strong_ordering::less; }
-bool operator<=(const BigNum &a, const BigNum &b) { return (a <=> b) != std::strong_ordering::less; }
-bool operator>=(const BigNum &a, const BigNum &b) { return (a <=> b) != std::strong_ordering::greater; }
+bool operator<(const BigNum &a, const BigNum &b) { return (a <=> b) == std::strong_ordering::less; }
+bool operator>(const BigNum &a, const BigNum &b) { return (a <=> b) == std::strong_ordering::greater; }
+bool operator<=(const BigNum &a, const BigNum &b) { return (a <=> b) != std::strong_ordering::greater; }
+bool operator>=(const BigNum &a, const BigNum &b) { return (a <=> b) != std::strong_ordering::less; }

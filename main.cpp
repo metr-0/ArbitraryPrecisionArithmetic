@@ -2,6 +2,6 @@
 #include "BigNum.h"
 
 int main() {
-    std::cout << -.080_bn + -.5_bn << std::endl;
+    std::cout << (1.5_bn - 0.8_bn) << std::endl;
     return 0;
 }

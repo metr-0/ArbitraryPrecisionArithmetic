@@ -9,6 +9,7 @@
 #include <string>
 #include <deque>
 #include <iostream>
+#include <compare>
 
 class BigNum {
 private:
@@ -34,10 +35,13 @@ public:
     friend BigNum operator/(const BigNum &a, const BigNum &b);
 
     // comparisons
+    friend std::strong_ordering operator<=>(const BigNum &a, const BigNum &b);
     friend bool operator==(const BigNum &a, const BigNum &b);
     friend bool operator!=(const BigNum &a, const BigNum &b);
     friend bool operator<(const BigNum &a, const BigNum &b);
     friend bool operator>(const BigNum &a, const BigNum &b);
+    friend bool operator<=(const BigNum &a, const BigNum &b);
+    friend bool operator>=(const BigNum &a, const BigNum &b);
 
     friend std::ostream &operator<<(std::ostream &out, const BigNum &a);
 

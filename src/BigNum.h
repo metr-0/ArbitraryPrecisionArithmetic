@@ -22,6 +22,8 @@ private:
     bool is_negative;
     size_t precision, decimal_precision;
     std::deque<int64_t> value;
+
+    void normalize();
 public:
     explicit BigNum(const char *s);
 

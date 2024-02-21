@@ -2,7 +2,9 @@
 // Created by m3tr0 on 21.02.2024.
 //
 
-#include "BigNum.h"
+#include "../BigNum.h"
+
+BigNum::BigNum() : is_negative(false), precision(0), decimal_precision(0), value(std::deque<int64_t>()) {}
 
 BigNum::BigNum(bool _is_negative, size_t _decimal_precision, std::deque<int64_t>  _value)
         : is_negative(_is_negative), decimal_precision(_decimal_precision), value(std::move(_value)) {

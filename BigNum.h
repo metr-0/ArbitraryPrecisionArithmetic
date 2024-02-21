@@ -2,9 +2,10 @@
 // Created by metro on 20.02.2024.
 //
 
+#pragma once
+
 #ifndef BIGNUM_BIGNUM_H
 #define BIGNUM_BIGNUM_H
-
 
 #include <string>
 #include <deque>
@@ -25,10 +26,11 @@ private:
 
     void normalize();
 public:
+    explicit BigNum();
     explicit BigNum(const char *s);
 
-    BigNum operator+() const;
-    BigNum operator-() const;
+    friend BigNum operator+(const BigNum &a);
+    friend BigNum operator-(const BigNum &a);
 
     // base arithmetic
     friend BigNum operator+(const BigNum &a, const BigNum &b);
@@ -45,9 +47,12 @@ public:
     friend bool operator<=(const BigNum &a, const BigNum &b);
     friend bool operator>=(const BigNum &a, const BigNum &b);
 
-    friend std::ostream &operator<<(std::ostream &out, const BigNum &a);
+    // shifts
+    friend BigNum operator<<(const BigNum &a, size_t shift);
+    friend BigNum operator>>(const BigNum &a, size_t shift);
 
-    // conversion
+    // output
+    friend std::ostream &operator<<(std::ostream &out, const BigNum &a);
     [[nodiscard]] std::string to_string() const;
 };
 

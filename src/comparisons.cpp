@@ -2,7 +2,7 @@
 // Created by metro on 21.02.2024.
 //
 
-#include "BigNum.h"
+#include "../BigNum.h"
 
 std::strong_ordering operator<=>(const BigNum &a, const BigNum &b) {
     size_t da, db;

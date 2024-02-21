@@ -2,7 +2,7 @@
 // Created by m3tr0 on 21.02.2024.
 //
 
-#include "BigNum.h"
+#include "../BigNum.h"
 
 BigNum operator+(const BigNum &a, const BigNum &b) {
     if (a.is_negative && !b.is_negative) return b - (-a);
@@ -18,23 +18,16 @@ BigNum operator+(const BigNum &a, const BigNum &b) {
 
     std::deque<int64_t> new_value;
 
-    int64_t memo = 0;
     for (size_t i = 0; i < upper; i++) {
         int64_t av = (i < da || i - da >= a.value.size()) ? 0 : a.value[i - da];
         int64_t bv = (i < db || i - db >= b.value.size()) ? 0 : b.value[i - db];
 
-        new_value.push_back(av + bv + memo);
-        if (new_value.back() >= BigNum::base) {
-            new_value[new_value.size() - 1] %= BigNum::base;
-            memo = 1;
-        } else {
-            memo = 0;
-        }
+        new_value.push_back(av + bv);
     }
 
-    if (memo) new_value.push_back(memo);
-
-    return BigNum{a.is_negative, std::max(a.decimal_precision, b.decimal_precision), new_value};
+    BigNum result{a.is_negative, std::max(a.decimal_precision, b.decimal_precision), new_value};
+    result.normalize();
+    return result;
 }
 
 BigNum operator-(const BigNum &a, const BigNum &b) {
@@ -61,13 +54,9 @@ BigNum operator-(const BigNum &a, const BigNum &b) {
         int64_t bv = (i < db || i - db >= b.value.size()) ? 0 : b.value[i - db];
 
         new_value.push_back(av - bv - memo);
-        if (new_value.back() < 0) {
-            new_value[new_value.size() - 1] += BigNum::base;
-            memo = 1;
-        } else {
-            memo = 0;
-        }
     }
 
-    return BigNum{a.is_negative, std::max(a.decimal_precision, b.decimal_precision), new_value};
+    BigNum result{a.is_negative, std::max(a.decimal_precision, b.decimal_precision), new_value};
+    result.normalize();
+    return result;
 }

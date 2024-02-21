@@ -2,12 +2,12 @@
 // Created by m3tr0 on 21.02.2024.
 //
 
-#include "BigNum.h"
+#include "../BigNum.h"
 
-BigNum BigNum::operator+() const {
-    return BigNum{is_negative, decimal_precision, value};
+BigNum operator+(const BigNum &a) {
+    return BigNum{a.is_negative, a.decimal_precision, a.value};
 }
 
-BigNum BigNum::operator-() const {
-    return BigNum{!is_negative, decimal_precision, value};
+BigNum operator-(const BigNum &a) {
+    return BigNum{!a.is_negative, a.decimal_precision, a.value};
 }

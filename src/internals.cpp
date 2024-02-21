@@ -22,6 +22,6 @@ void BigNum::normalize() {
         memo /= base;
     }
 
-    while (value.size() > 1 && value.back() == 0)
+    while (!value.empty() && value.back() == 0)
         value.pop_back();
 }

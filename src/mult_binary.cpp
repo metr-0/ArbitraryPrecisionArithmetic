@@ -9,7 +9,7 @@ BigNum operator*(const BigNum &a, const BigNum &b) {
     static const size_t min_size = 5;
 
     if (a.is_negative || b.is_negative || a.precision || b.precision) {
-        BigNum na{false, 0, a.value}, nb{false, 0, b.value};
+        BigNum na{a.value}, nb{b.value};
         BigNum res = na * nb;
 
         res.is_negative = a.is_negative != b.is_negative;
@@ -24,7 +24,7 @@ BigNum operator*(const BigNum &a, const BigNum &b) {
 
     // recursion base:
     if (a.value.size() < min_size || b.value.size() < min_size) {
-        BigNum result{false, 0, std::deque<int64_t>(
+        BigNum result{std::deque<int64_t>(
                 a.value.size() + b.value.size() - 1, 0)};
         for (size_t ai = 0; ai < a.value.size(); ai++)
             for (size_t bi = 0; bi < b.value.size(); bi++)
@@ -54,6 +54,52 @@ BigNum operator*(const BigNum &a, const BigNum &b) {
     return t1 + (((a1 + a2) * (b1 + b2) - t1 - t2) << m) + (t2 << (m * 2));
 }
 
+std::pair<BigNum, BigNum> div_mod(const BigNum &a, const BigNum &b) {
+    if (b == 0_bn) {
+        throw std::runtime_error("Division by zero");
+    }
+    // => b != 0
+
+    if (a.is_negative || b.is_negative || a.precision || b.precision) {
+        BigNum na{a.value}, nb{b.value};
+        na = na << b.precision;
+
+        std::pair<BigNum, BigNum> res = div_mod(na, nb);
+        res.first.precision = a.precision, res.first.decimal_precision = a.decimal_precision;
+        res.first.is_negative = a.is_negative != b.is_negative;
+
+        return res;
+    }
+    // => a, b positive and integer
+
+    if (b > a) return std::pair<BigNum, BigNum>{BigNum{}, a};
+
+    std::pair<BigNum, BigNum> t = div_mod(a >> 1, b);
+    t.second = t.second << 1;
+    t.second.value[0] = a.value[0];
+
+    // b * le always <= t.second; b * ri always > t.second
+    int64_t le = 0, ri = BigNum::base, mid;
+    while (ri - le != 1) {
+        mid = (le + ri) / 2;
+        BigNum test = BigNum{mid};
+        if (b * BigNum{mid} <= t.second) le = mid;
+        else ri = mid;
+    }
+
+    t.first = t.first << 1;
+    t.first.value[0] = le;
+    t.second = t.second - b * BigNum{mid};
+
+    return t;
+}
+
 BigNum operator/(const BigNum &a, const BigNum &b) {
-    return a;
+    std::pair<BigNum, BigNum> res = div_mod(a, b);
+    return res.first;
+}
+
+BigNum operator%(const BigNum &a, const BigNum &b) {
+    std::pair<BigNum, BigNum> res = div_mod(a, b);
+    return res.second;
 }

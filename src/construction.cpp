@@ -2,13 +2,29 @@
 // Created by m3tr0 on 21.02.2024.
 //
 
+#include <utility>
+
 #include "../BigNum.h"
 
-BigNum::BigNum() : is_negative(false), precision(0), decimal_precision(0), value(std::deque<int64_t>()) {}
+BigNum::BigNum() : BigNum{std::deque<int64_t>()} {}
 
-BigNum::BigNum(bool _is_negative, size_t _decimal_precision, std::deque<int64_t>  _value)
+BigNum::BigNum(bool _is_negative, size_t _decimal_precision, std::deque<int64_t> _value)
         : is_negative(_is_negative), decimal_precision(_decimal_precision), value(std::move(_value)) {
     precision = (decimal_precision + base_exp_ratio - 1) / base_exp_ratio;
+}
+
+BigNum::BigNum(std::deque<int64_t> _value) : BigNum{false, 0, std::move(_value)} {}
+
+BigNum::BigNum(int64_t v) {
+    if (v < 0) {
+        is_negative = true;
+        v = -v;
+    } else {
+        is_negative = false;
+    }
+    precision = 0; decimal_precision = 0;
+    value.push_front(v);
+    normalize();
 }
 
 BigNum::BigNum(const char *s) {
@@ -53,6 +69,8 @@ BigNum::BigNum(const char *s) {
 
     for (int i = 0; i < base_exp_ratio * precision - decimal_precision; i++)
         value[0] *= 10;
+
+    normalize();
 }
 
 BigNum operator""_bn(const char *s) {

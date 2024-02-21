@@ -13,7 +13,7 @@ std::strong_ordering operator<=>(const BigNum &a, const BigNum &b) {
     }
     const size_t upper = std::max(a.value.size() + da, b.value.size() + db);
 
-    for (size_t i = upper - 1; i >= 0; i--) {
+    for (int i = (int)upper - 1; i >= 0; i--) {
         int64_t av = (i < da || i - da >= a.value.size()) ? 0 : a.value[i - da];
         int64_t bv = (i < db || i - db >= b.value.size()) ? 0 : b.value[i - db];
 

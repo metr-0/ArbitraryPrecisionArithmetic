@@ -14,7 +14,8 @@
 
 class BigNum {
 private:
-    explicit BigNum(bool _is_negative, size_t _decimal_precision, std::deque<int64_t>  _value);
+    explicit BigNum(bool _is_negative, size_t _decimal_precision, std::deque<int64_t> _value);
+    explicit BigNum(std::deque<int64_t> _value);
 
     static const int64_t base = 1000000000LL;
     static const int64_t decimal_base = 10LL;
@@ -27,6 +28,7 @@ private:
     void normalize();
 public:
     explicit BigNum();
+    explicit BigNum(int64_t v);
     explicit BigNum(const char *s);
 
     friend BigNum operator+(const BigNum &a);
@@ -36,7 +38,9 @@ public:
     friend BigNum operator+(const BigNum &a, const BigNum &b);
     friend BigNum operator-(const BigNum &a, const BigNum &b);
     friend BigNum operator*(const BigNum &a, const BigNum &b);
+    friend std::pair<BigNum, BigNum> div_mod(const BigNum &a, const BigNum &b);
     friend BigNum operator/(const BigNum &a, const BigNum &b);
+    friend BigNum operator%(const BigNum &a, const BigNum &b);
 
     // comparisons
     friend std::strong_ordering operator<=>(const BigNum &a, const BigNum &b);

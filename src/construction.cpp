@@ -9,8 +9,8 @@
 BigNum::BigNum() : BigNum{std::deque<int64_t>()} {}
 
 BigNum::BigNum(bool _is_negative, size_t _decimal_precision, std::deque<int64_t> _value)
-        : is_negative(_is_negative), decimal_precision(_decimal_precision), value(std::move(_value)) {
-    precision = (decimal_precision + base_exp_ratio - 1) / base_exp_ratio;
+        : is_negative(_is_negative), _decimal_precision(_decimal_precision), value(std::move(_value)) {
+    _precision = (_decimal_precision + base_exp_ratio - 1) / base_exp_ratio;
 }
 
 BigNum::BigNum(std::deque<int64_t> _value) : BigNum{false, 0, std::move(_value)} {}
@@ -22,7 +22,7 @@ BigNum::BigNum(int64_t v) {
     } else {
         is_negative = false;
     }
-    precision = 0; decimal_precision = 0;
+    _precision = 0; _decimal_precision = 0;
     value.push_front(v);
     normalize();
 }
@@ -30,7 +30,7 @@ BigNum::BigNum(int64_t v) {
 BigNum::BigNum(const char *s) {
     if (s == nullptr) {
         is_negative = false;
-        decimal_precision = precision = 0;
+        _decimal_precision = _precision = 0;
         value.push_front(0);
         return;
     }
@@ -43,9 +43,9 @@ BigNum::BigNum(const char *s) {
     while (*ptr != '\0' && ptr != dot && (*ptr <= '0' || *ptr > '9')) ptr++;
 
     const size_t length = strlen(ptr);
-    decimal_precision = (dot == nullptr) ? 0 : (length - 1 - (dot - ptr));
-    precision = (decimal_precision + base_exp_ratio - 1) / base_exp_ratio;
-    const size_t int_part_length = (dot == nullptr) ? length : (length - 1 - decimal_precision);
+    _decimal_precision = (dot == nullptr) ? 0 : (length - 1 - (dot - ptr));
+    _precision = (_decimal_precision + base_exp_ratio - 1) / base_exp_ratio;
+    const size_t int_part_length = (dot == nullptr) ? length : (length - 1 - _decimal_precision);
 
     int64_t cur = 0, rem = (int64_t)int_part_length % base_exp_ratio;
     if (rem == 0 && int_part_length) rem = base_exp_ratio;
@@ -67,7 +67,7 @@ BigNum::BigNum(const char *s) {
         ptr++, rem--;
     }
 
-    for (int i = 0; i < base_exp_ratio * precision - decimal_precision; i++)
+    for (int i = 0; i < base_exp_ratio * _precision - _decimal_precision; i++)
         value[0] *= 10;
 
     normalize();

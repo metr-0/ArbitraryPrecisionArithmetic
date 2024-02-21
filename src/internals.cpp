@@ -25,3 +25,15 @@ void BigNum::normalize() {
     while (!value.empty() && value.back() == 0)
         value.pop_back();
 }
+
+size_t BigNum::decimal_precision() const {
+    return _decimal_precision;
+}
+
+void BigNum::decimal_precision(size_t x) {
+    _decimal_precision = x;
+    size_t new_precision = (_decimal_precision + base_exp_ratio - 1) / base_exp_ratio;
+
+    if (new_precision < _precision) *this = *this >> (_precision - new_precision);
+    else *this = *this << (new_precision - _precision);
+}

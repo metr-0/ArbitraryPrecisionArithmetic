@@ -9,10 +9,10 @@ BigNum operator+(const BigNum &a, const BigNum &b) {
     if (b.is_negative && !a.is_negative) return a - (-b);
 
     size_t da, db;
-    if (a.precision > b.precision) {
-        da = 0; db = a.precision - b.precision;
+    if (a._precision > b._precision) {
+        da = 0; db = a._precision - b._precision;
     } else {
-        da = b.precision - a.precision; db = 0;
+        da = b._precision - a._precision; db = 0;
     }
     const size_t upper = std::max(a.value.size() + da, b.value.size() + db);
 
@@ -25,7 +25,7 @@ BigNum operator+(const BigNum &a, const BigNum &b) {
         new_value.push_back(av + bv);
     }
 
-    BigNum result{a.is_negative, std::max(a.decimal_precision, b.decimal_precision), new_value};
+    BigNum result{a.is_negative, std::max(a._decimal_precision, b._decimal_precision), new_value};
     result.normalize();
     return result;
 }
@@ -39,10 +39,10 @@ BigNum operator-(const BigNum &a, const BigNum &b) {
     // => abs(a) >= abs(b)
 
     size_t da, db;
-    if (a.precision > b.precision) {
-        da = 0; db = a.precision - b.precision;
+    if (a._precision > b._precision) {
+        da = 0; db = a._precision - b._precision;
     } else {
-        da = b.precision - a.precision; db = 0;
+        da = b._precision - a._precision; db = 0;
     }
     const size_t upper = std::max(a.value.size() + da, b.value.size() + db);
 
@@ -56,7 +56,7 @@ BigNum operator-(const BigNum &a, const BigNum &b) {
         new_value.push_back(av - bv - memo);
     }
 
-    BigNum result{a.is_negative, std::max(a.decimal_precision, b.decimal_precision), new_value};
+    BigNum result{a.is_negative, std::max(a._decimal_precision, b._decimal_precision), new_value};
     result.normalize();
     return result;
 }

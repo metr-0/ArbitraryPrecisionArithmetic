@@ -22,7 +22,7 @@ private:
     static const int64_t base_exp_ratio = 9LL;
 
     bool is_negative;
-    size_t precision, decimal_precision;
+    size_t _precision, _decimal_precision;
     std::deque<int64_t> value;
 
     void normalize();
@@ -30,6 +30,10 @@ public:
     explicit BigNum();
     explicit BigNum(int64_t v);
     explicit BigNum(const char *s);
+
+    // getter&setter for decimal precision
+    size_t decimal_precision() const;
+    void decimal_precision(size_t x);
 
     friend BigNum operator+(const BigNum &a);
     friend BigNum operator-(const BigNum &a);

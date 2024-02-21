@@ -5,7 +5,7 @@
 #include "../BigNum.h"
 
 BigNum operator<<(const BigNum &a, size_t shift) {
-    BigNum result{a.is_negative, a.precision, a.value};
+    BigNum result{a.is_negative, a._decimal_precision, a.value};
     while (shift) {
         result.value.push_front(0);
         shift--;
@@ -14,7 +14,7 @@ BigNum operator<<(const BigNum &a, size_t shift) {
 }
 
 BigNum operator>>(const BigNum &a, size_t shift) {
-    BigNum result{a.is_negative, a.precision, a.value};
+    BigNum result{a.is_negative, a._decimal_precision, a.value};
     while (shift && !result.value.empty()) {
         result.value.pop_front();
         shift--;

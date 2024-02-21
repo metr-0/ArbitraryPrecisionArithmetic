@@ -8,14 +8,14 @@
 BigNum operator*(const BigNum &a, const BigNum &b) {
     static const size_t min_size = 5;
 
-    if (a.is_negative || b.is_negative || a.precision || b.precision) {
+    if (a.is_negative || b.is_negative || a._precision || b._precision) {
         BigNum na{a.value}, nb{b.value};
         BigNum res = na * nb;
 
         res.is_negative = a.is_negative != b.is_negative;
-        res.decimal_precision = a.decimal_precision + b.decimal_precision;
-        res.precision = (res.decimal_precision + BigNum::base_exp_ratio - 1) / BigNum::base_exp_ratio;
-        for (int i = 0; i < a.precision + b.precision - res.precision; i++)
+        res._decimal_precision = a._decimal_precision + b._decimal_precision;
+        res._precision = (res._decimal_precision + BigNum::base_exp_ratio - 1) / BigNum::base_exp_ratio;
+        for (int i = 0; i < a._precision + b._precision - res._precision; i++)
             res.value.pop_front();
 
         return res;
@@ -60,12 +60,12 @@ std::pair<BigNum, BigNum> div_mod(const BigNum &a, const BigNum &b) {
     }
     // => b != 0
 
-    if (a.is_negative || b.is_negative || a.precision || b.precision) {
+    if (a.is_negative || b.is_negative || a._precision || b._precision) {
         BigNum na{a.value}, nb{b.value};
-        na = na << b.precision;
+        na = na << b._precision;
 
         std::pair<BigNum, BigNum> res = div_mod(na, nb);
-        res.first.precision = a.precision, res.first.decimal_precision = a.decimal_precision;
+        res.first._precision = a._precision, res.first._decimal_precision = a._decimal_precision;
         res.first.is_negative = a.is_negative != b.is_negative;
 
         return res;

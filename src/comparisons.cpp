@@ -6,10 +6,10 @@
 
 std::strong_ordering operator<=>(const BigNum &a, const BigNum &b) {
     size_t da, db;
-    if (a.precision > b.precision) {
-        da = 0; db = a.precision - b.precision;
+    if (a._precision > b._precision) {
+        da = 0; db = a._precision - b._precision;
     } else {
-        da = b.precision - a.precision; db = 0;
+        da = b._precision - a._precision; db = 0;
     }
     const size_t upper = std::max(a.value.size() + da, b.value.size() + db);
 

@@ -28,6 +28,7 @@ BigNum operator*(const BigNum &a, const BigNum &b) {
     if (a.value.size() < min_size || b.value.size() < min_size) {
         BigNum result{std::deque<int64_t>(
                 a.value.size() + b.value.size() - 1, 0)};
+
         for (size_t ai = 0; ai < a.value.size(); ai++)
             for (size_t bi = 0; bi < b.value.size(); bi++)
                 result.value[ai + bi] += a.value[ai] * b.value[bi];

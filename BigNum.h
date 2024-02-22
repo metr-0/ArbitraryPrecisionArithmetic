@@ -14,9 +14,11 @@
 
 class BigNum {
 private:
+    // constructors
     explicit BigNum(bool _is_negative, size_t _decimal_precision, std::deque<int64_t> _value);
     explicit BigNum(std::deque<int64_t> _value);
 
+    // constants
     static const int64_t base = 1000000000LL;
     static const int64_t decimal_base = 10LL;
     static const int64_t base_exp_ratio = 9LL;
@@ -27,18 +29,21 @@ private:
 
     void normalize();
 public:
+    // constructors
     explicit BigNum();
     explicit BigNum(int64_t v);
+    explicit BigNum(int64_t v, size_t _decimal_precision);
     explicit BigNum(const char *s);
 
     // getter&setter for decimal precision
-    size_t decimal_precision() const;
+    [[nodiscard]] size_t decimal_precision() const;
     void decimal_precision(size_t x);
 
+    // unary operators
     friend BigNum operator+(const BigNum &a);
     friend BigNum operator-(const BigNum &a);
 
-    // base arithmetic
+    // arithmetic operators
     friend BigNum operator+(const BigNum &a, const BigNum &b);
     friend BigNum operator-(const BigNum &a, const BigNum &b);
     friend BigNum operator*(const BigNum &a, const BigNum &b);
@@ -62,6 +67,25 @@ public:
     // output
     friend std::ostream &operator<<(std::ostream &out, const BigNum &a);
     [[nodiscard]] std::string to_string() const;
+
+    // trivial overloads
+    friend BigNum operator+(const BigNum &a, int64_t b);
+    friend BigNum operator-(const BigNum &a, int64_t b);
+    friend BigNum operator*(const BigNum &a, int64_t b);
+    friend BigNum operator/(const BigNum &a, int64_t b);
+    friend BigNum operator%(const BigNum &a, int64_t b);
+    friend BigNum &operator+=(BigNum &a, const BigNum &b);
+    friend BigNum &operator+=(BigNum &a, int64_t b);
+    friend BigNum &operator-=(BigNum &a, const BigNum &b);
+    friend BigNum &operator-=(BigNum &a, int64_t b);
+    friend BigNum &operator*=(BigNum &a, const BigNum &b);
+    friend BigNum &operator*=(BigNum &a, int64_t b);
+    friend BigNum &operator/=(BigNum &a, const BigNum &b);
+    friend BigNum &operator/=(BigNum &a, int64_t b);
+    friend BigNum &operator%=(BigNum &a, const BigNum &b);
+    friend BigNum &operator%=(BigNum &a, int64_t b);
+    friend BigNum &operator<<=(BigNum &a, size_t shift);
+    friend BigNum &operator>>=(BigNum &a, size_t shift);
 };
 
 BigNum operator""_bn(const char *s);

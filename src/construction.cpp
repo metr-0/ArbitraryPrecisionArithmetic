@@ -8,12 +8,12 @@
 
 BigNum::BigNum() : BigNum{std::deque<int64_t>()} {}
 
+BigNum::BigNum(std::deque<int64_t> _value) : BigNum{false, 0, std::move(_value)} {}
+
 BigNum::BigNum(bool _is_negative, size_t _decimal_precision, std::deque<int64_t> _value)
         : is_negative(_is_negative), _decimal_precision(_decimal_precision), value(std::move(_value)) {
     _precision = (_decimal_precision + base_exp_ratio - 1) / base_exp_ratio;
 }
-
-BigNum::BigNum(std::deque<int64_t> _value) : BigNum{false, 0, std::move(_value)} {}
 
 BigNum::BigNum(int64_t v) {
     if (v < 0) {
@@ -25,6 +25,12 @@ BigNum::BigNum(int64_t v) {
     _precision = 0; _decimal_precision = 0;
     value.push_front(v);
     normalize();
+}
+
+BigNum::BigNum(int64_t v, size_t _decimal_precision) : BigNum{v} {
+    this->_decimal_precision = _decimal_precision;
+    _precision = _precision = (_decimal_precision + base_exp_ratio - 1) / base_exp_ratio;
+    *this <<= _precision;
 }
 
 BigNum::BigNum(const char *s) {

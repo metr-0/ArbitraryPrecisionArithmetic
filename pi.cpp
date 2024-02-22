@@ -4,21 +4,18 @@
 
 #include "BigNum.h"
 #include <iostream>
+#include <chrono>
 
 BigNum pi(size_t precision) {
-    BigNum n0 = 16_bn, n1 = 4_bn, n2 = 2_bn, n3 = 1_bn;
-    n0.decimal_precision(precision + 1);
-    n1.decimal_precision(precision + 1);
-    n2.decimal_precision(precision + 1);
-    n3.decimal_precision(precision + 1);
+    BigNum n0{16, precision + 1}, n1{4, precision + 1},
+            n2{2, precision + 1}, n3{1, precision + 1};
 
-    BigNum result;
-    result.decimal_precision(precision + 1);
+    BigNum result{0, precision + 1};
 
     int k = 0;
     while (true) {
         n0 = n0 / BigNum{16};
-        BigNum t0 = (n1 / BigNum{8 * k + 1} - n2 / BigNum{8 * k + 4} - n3 / BigNum{8 * k + 5} - n3 / BigNum{8 * k + 6});
+        BigNum t0 = (n1 / (8 * k + 1) - n2 / BigNum{8 * k + 4} - n3 / BigNum{8 * k + 5} - n3 / BigNum{8 * k + 6});
         BigNum t = n0 * t0;
 
         t.decimal_precision(precision + 1);
@@ -27,11 +24,14 @@ BigNum pi(size_t precision) {
         k++;
     }
 
-    std::cout << k << std::endl;
     return result;
 }
 
 int main() {
+    auto start = std::chrono::high_resolution_clock::now();
     std::cout << pi(100) << std::endl;
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << duration.count() << std::endl;
     return 0;
 }

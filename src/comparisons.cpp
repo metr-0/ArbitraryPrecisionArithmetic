@@ -4,6 +4,10 @@
 
 #include "../BigNum.h"
 
+bool BigNum::is_zero() const {
+    return value.empty();
+}
+
 std::strong_ordering operator<=>(const BigNum &a, const BigNum &b) {
     size_t da, db;
     if (a._precision > b._precision) {

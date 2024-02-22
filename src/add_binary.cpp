@@ -16,16 +16,15 @@ BigNum operator+(const BigNum &a, const BigNum &b) {
     }
     const size_t upper = std::max(a.value.size() + da, b.value.size() + db);
 
-    std::deque<int64_t> new_value;
+    BigNum result{a.is_negative, std::max(a._decimal_precision, b._decimal_precision), std::deque<int64_t>()};
 
     for (size_t i = 0; i < upper; i++) {
         int64_t av = (i < da || i - da >= a.value.size()) ? 0 : a.value[i - da];
         int64_t bv = (i < db || i - db >= b.value.size()) ? 0 : b.value[i - db];
 
-        new_value.push_back(av + bv);
+        result.value.push_back(av + bv);
     }
 
-    BigNum result{a.is_negative, std::max(a._decimal_precision, b._decimal_precision), new_value};
     result.normalize();
     return result;
 }
@@ -46,17 +45,15 @@ BigNum operator-(const BigNum &a, const BigNum &b) {
     }
     const size_t upper = std::max(a.value.size() + da, b.value.size() + db);
 
-    std::deque<int64_t> new_value;
+    BigNum result{a.is_negative, std::max(a._decimal_precision, b._decimal_precision), std::deque<int64_t>()};
 
-    int64_t memo = 0;
     for (size_t i = 0; i < upper; i++) {
         int64_t av = (i < da || i - da >= a.value.size()) ? 0 : a.value[i - da];
         int64_t bv = (i < db || i - db >= b.value.size()) ? 0 : b.value[i - db];
 
-        new_value.push_back(av - bv - memo);
+        result.value.push_back(av - bv);
     }
 
-    BigNum result{a.is_negative, std::max(a._decimal_precision, b._decimal_precision), new_value};
     result.normalize();
     return result;
 }

@@ -52,6 +52,7 @@ public:
     friend BigNum operator%(const BigNum &a, const BigNum &b);
 
     // comparisons
+    [[nodiscard]] bool is_zero() const;
     friend std::strong_ordering operator<=>(const BigNum &a, const BigNum &b);
     friend bool operator==(const BigNum &a, const BigNum &b);
     friend bool operator!=(const BigNum &a, const BigNum &b);

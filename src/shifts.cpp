@@ -6,6 +6,7 @@
 
 BigNum operator<<(const BigNum &a, size_t shift) {
     BigNum result{a.is_negative, a._decimal_precision, a.value};
+    if (result.is_zero()) return result;
     while (shift) {
         result.value.push_front(0);
         shift--;

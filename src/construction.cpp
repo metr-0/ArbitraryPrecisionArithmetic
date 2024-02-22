@@ -4,7 +4,7 @@
 
 #include <utility>
 
-#include "../BigNum.h"
+#include "BigNum.h"
 
 BigNum::BigNum() : BigNum{std::deque<int64_t>()} {}
 

@@ -2,7 +2,7 @@
 // Created by m3tr0 on 21.02.2024.
 //
 
-#include "../BigNum.h"
+#include "BigNum.h"
 
 BigNum operator+(const BigNum &a, const BigNum &b) {
     if (a.is_negative && !b.is_negative) return b - (-a);

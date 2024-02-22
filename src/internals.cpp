@@ -2,12 +2,13 @@
 // Created by m3tr0 on 21.02.2024.
 //
 
-#include "../BigNum.h"
+#include "BigNum.h"
 
 // standard:
 // 1. for all digit: 0 <= digit < base
 // 2. no leading zeros
 // 3. 0 is non-negative
+// 4. trailing numbers are zeros
 void BigNum::normalize() {
     int64_t memo = 0;
     for (int64_t &e : value) {

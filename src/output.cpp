@@ -2,7 +2,7 @@
 // Created by m3tr0 on 21.02.2024.
 //
 
-#include "../BigNum.h"
+#include "BigNum.h"
 
 std::string BigNum::to_string() const {
     if (value.empty()) return "0";

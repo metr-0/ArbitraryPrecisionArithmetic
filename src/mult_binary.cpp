@@ -2,7 +2,7 @@
 // Created by m3tr0 on 21.02.2024.
 //
 
-#include "../BigNum.h"
+#include "BigNum.h"
 
 // Karatsuba multiplication. Source https://habr.com/ru/articles/124258/
 BigNum operator*(const BigNum &a, const BigNum &b) {

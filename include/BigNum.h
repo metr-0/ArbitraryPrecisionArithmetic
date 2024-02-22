@@ -4,9 +4,6 @@
 
 #pragma once
 
-#ifndef BIGNUM_BIGNUM_H
-#define BIGNUM_BIGNUM_H
-
 #include <string>
 #include <deque>
 #include <iostream>
@@ -90,5 +87,3 @@ public:
 };
 
 BigNum operator""_bn(const char *s);
-
-#endif //BIGNUM_BIGNUM_H

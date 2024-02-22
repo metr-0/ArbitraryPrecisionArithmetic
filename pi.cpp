@@ -18,17 +18,20 @@ BigNum pi(size_t precision) {
     int k = 0;
     while (true) {
         n0 = n0 / BigNum{16};
-        BigNum t = n0 * (n1 / BigNum{8 * k + 1} - n2 / BigNum{8 * k + 4} - n3 / BigNum{8 * k + 5} - n3 / BigNum{8 * k + 6});
+        BigNum t0 = (n1 / BigNum{8 * k + 1} - n2 / BigNum{8 * k + 4} - n3 / BigNum{8 * k + 5} - n3 / BigNum{8 * k + 6});
+        BigNum t = n0 * t0;
+
         t.decimal_precision(precision + 1);
         if (t == 0_bn) break;
         result = result + t;
         k++;
     }
 
+    std::cout << k << std::endl;
     return result;
 }
 
 int main() {
-    std::cout << pi(5) << std::endl;
+    std::cout << pi(100) << std::endl;
     return 0;
 }

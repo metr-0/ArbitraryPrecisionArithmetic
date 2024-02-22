@@ -15,12 +15,14 @@ BigNum operator*(const BigNum &a, const BigNum &b) {
         res.is_negative = a.is_negative != b.is_negative;
         res._decimal_precision = a._decimal_precision + b._decimal_precision;
         res._precision = (res._decimal_precision + BigNum::base_exp_ratio - 1) / BigNum::base_exp_ratio;
-        for (int i = 0; i < a._precision + b._precision - res._precision; i++)
+        for (int i = 0; !res.value.empty() && i < a._precision + b._precision - res._precision; i++)
             res.value.pop_front();
 
         return res;
     }
     // => a, b positive and integer
+
+    if (a.value.empty() || b.value.empty()) return BigNum{};
 
     // recursion base:
     if (a.value.size() < min_size || b.value.size() < min_size) {
@@ -51,7 +53,15 @@ BigNum operator*(const BigNum &a, const BigNum &b) {
     }
 
     BigNum t1 = a1 * b1, t2 = a2 * b2;
-    return t1 + (((a1 + a2) * (b1 + b2) - t1 - t2) << m) + (t2 << (m * 2));
+    BigNum tr = t1 + (((a1 + a2) * (b1 + b2) - t1 - t2) << m) + (t2 << (m * 2));
+
+    if (!tr.value.empty() && tr.value.back() == 48) {
+        std::cout << a << std::endl;
+        std::cout << b << std::endl;
+        std::cout << tr << std::endl;
+    }
+
+    return tr;
 }
 
 std::pair<BigNum, BigNum> div_mod(const BigNum &a, const BigNum &b) {
@@ -82,14 +92,13 @@ std::pair<BigNum, BigNum> div_mod(const BigNum &a, const BigNum &b) {
     int64_t le = 0, ri = BigNum::base, mid;
     while (ri - le != 1) {
         mid = (le + ri) / 2;
-        BigNum test = BigNum{mid};
         if (b * BigNum{mid} <= t.second) le = mid;
         else ri = mid;
     }
 
     t.first = t.first << 1;
     t.first.value[0] = le;
-    t.second = t.second - b * BigNum{mid};
+    t.second = t.second - b * BigNum{le};
 
     return t;
 }
